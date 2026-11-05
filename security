@@ -1,0 +1,9 @@
+Review the database and fix security. Every table must have Row Level Security enabled.
+- Students can only read and edit their own profile, cart, favourites and orders.
+- Vendors can only manage their own vendor row, menu items and the orders placed with them.
+- Riders can only see deliveries assigned to them, plus open requests if approved.
+- Admins have full access, checked against a role stored in a profiles table.
+- A user must never be able to change their own role, approve themselves as a vendor or rider, or edit order totals or payment status. Enforce this in the database (policies or triggers), not only in the UI.
+- Store money as integer kobo. Compute order totals and commission on the server from database prices, never from values sent by the browser.
+- Protect /student, /vendor, /rider and /admin routes by role, on the server.
+Show me a summary of what you changed.
