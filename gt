@@ -1,0 +1,12 @@
+Audit this project against the list below and tell me, for each item, whether it exists, is partial, or is missing. Don't change any code yet.
+
+1. Roles: student, vendor, rider, admin, with role-based route protection.
+2. Vendor registration with admin approval; menu CRUD with food images.
+3. Rider registration with admin approval; delivery requests, accept, status updates.
+4. Student marketplace: search, category and price filters, cart, checkout, order tracking, favourites, reviews.
+5. Order statuses: pending, confirmed, preparing, ready for pickup, out for delivery, delivered, cancelled.
+6. Payments: Paystack (card and bank transfer) with server-side verification and a signed webhook, duplicate-payment protection, and manual bank transfer with a pending-verification status.
+7. Admin: commission settings (5 to 10%), user, vendor and order management, analytics.
+8. Row Level Security on every table, so students only see their own orders, vendors only their own menu and orders, riders only assigned deliveries.
+
+Also list every environment variable the app needs.
