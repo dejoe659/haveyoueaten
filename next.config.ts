@@ -4,8 +4,8 @@ const config: NextConfig = {
   reactStrictMode: true,
   images: {
     remotePatterns: [
-      // Supabase Storage (menu photos, vendor logos). Host comes from your project URL.
-      { protocol: "https", hostname: "*.supabase.co", pathname: "/storage/v1/object/public/**" },
+      // Vercel Blob (menu photos, vendor logos), added in Stage 4/5.
+      { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
     ],
   },
   async headers() {

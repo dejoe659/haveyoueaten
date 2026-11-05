@@ -2,37 +2,35 @@
 
 Your Campus. Your Food. Delivered. Food ordering for Nigerian university campuses (launching at UNN).
 
-## Stage 1 setup
+Stack: Next.js 15, TypeScript, Tailwind, **Neon Postgres**, Paystack, Vercel.
 
-### 1. Install
-```bash
-npm install
-cp .env.example .env.local
-```
+## Setup
 
-### 2. Create the Supabase project
-1. supabase.com > New project. Save the database password.
-2. Project Settings > API: copy **Project URL**, **anon key** and **service_role key** into `.env.local`.
-   The service_role key is a secret. It must never start with `NEXT_PUBLIC_`.
-3. SQL Editor: run these files **in order**, each as a new query:
-   `supabase/migrations/0001_schema.sql`, then `0002_rls_and_guards.sql`, then `0003_seed.sql`.
-   (Or with the Supabase CLI: `supabase link` then `supabase db push`.)
-4. Authentication > Providers: keep Email enabled. For development you may turn off "Confirm email".
-5. Authentication > URL Configuration: Site URL `http://localhost:3000`; add your Vercel URL later.
+1. `npm install` then `cp .env.example .env.local`
+2. Neon console > your project > **Connect**: copy the **pooled** connection string into `DATABASE_URL`.
+3. The database schema, security rules and seed data in `db/migrations/` are already applied to the
+   Neon project. To rebuild elsewhere, run `0001` to `0004` in order in the Neon SQL Editor.
+4. `npm run dev`, then open http://localhost:3000/api/health. Expect `{"ok":true,"universities":1,"campuses":3}`.
 
-### 3. Run
-```bash
-npm run dev
-```
-Open http://localhost:3000 for the landing page and http://localhost:3000/api/health.
-You should see `{"ok":true,"universities":1}`.
+## How security works
+- Signed-in users' queries run through `withUser()` in `src/lib/db.ts`: a transaction as the low-privilege
+  `app_user` role with `app.user_id` set. Postgres row-level security then limits every query to that user's rows.
+- `sql()` is the trusted owner connection (bypasses RLS). Only payment webhooks, server-side order pricing
+  and admin jobs use it.
+- Guard triggers block role self-promotion, editing order amounts, confirming unpaid orders and invalid status jumps.
 
-### 4. Make yourself admin (after Stage 3 sign-up exists)
-Sign up, then in the SQL Editor run the `update ... set role = 'admin'` line at the bottom of `0003_seed.sql` with your email.
+## Login (Stage 3)
+- Email + password. Passwords are hashed with scrypt; sessions are random tokens stored only as SHA-256 hashes (30 days, httpOnly cookie).
+- 5 failed logins per email (or 30 per IP) in 15 minutes locks login for 15 minutes.
+- Not built yet: email verification and password reset (need an email provider, planned before launch).
+- Sign up as student, vendor or rider. Admins cannot self-register.
+
+## Make yourself admin
+Register normally, then run the `update public.profiles set role = 'admin' ...` line at the bottom of `db/migrations/0003_seed.sql` with your email.
 
 ## Credentials needed later
-| Needed from | Stage | Variable |
+| From | Stage | Variable |
 |---|---|---|
-| Paystack (test keys are free) | 7 | `PAYSTACK_SECRET_KEY` |
+| Paystack (free test keys) | 7 | `PAYSTACK_SECRET_KEY` |
 | Flutterwave (optional) | 7 | `FLUTTERWAVE_SECRET_KEY`, `FLUTTERWAVE_WEBHOOK_HASH` |
-| Vercel project env vars | 12 | all of `.env.example` |
+| Vercel project settings | 12 | everything in `.env.example` |
