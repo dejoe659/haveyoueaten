@@ -4,6 +4,8 @@ const restaurants = [
   { name: "Campus Shawarma", cuisine: "Fast food · Wraps", time: "10–20 min", price: "₦", color: "sun", featured: false },
 ];
 
+import { CheckoutButtons } from "@/app/components/checkout-buttons";
+
 const categories = ["All meals", "Rice & bowls", "Swallow", "Fast food", "Drinks"];
 
 export default function HomePage() {
@@ -35,6 +37,8 @@ export default function HomePage() {
         <div className="category-row" aria-label="Meal categories">{categories.map((category, index) => <button className={index === 0 ? "category active" : "category"} key={category}>{category}</button>)}</div>
         <div className="restaurant-grid">{restaurants.map((restaurant) => <article className="restaurant-card" key={restaurant.name}><div className={`restaurant-image ${restaurant.color}`}><span className="image-initials">{restaurant.name.split(" ").map((part) => part[0]).slice(0, 2).join("")}</span>{restaurant.featured && <span className="featured-badge">Popular</span>}</div><div className="restaurant-info"><div><h3>{restaurant.name}</h3><p>{restaurant.cuisine}</p></div><span className="price">{restaurant.price}</span></div><div className="restaurant-meta"><span>{restaurant.time}</span><span className="open-status"><i /> Open now</span></div></article>)}</div>
       </section>
+
+      <section className="payment-section" aria-label="Meal pass payment"><CheckoutButtons /></section>
 
       <section className="steps-section" id="how-it-works" aria-labelledby="steps-title"><div className="steps-intro"><p className="eyebrow eyebrow-dark">Simple by design</p><h2 id="steps-title">From hungry to happy in three steps.</h2></div><div className="steps-grid"><div className="step"><span>01</span><h3>Pick a meal</h3><p>Browse meals from vendors you already love around campus.</p></div><div className="step"><span>02</span><h3>Place your order</h3><p>Tell us where you are and we will handle the rest.</p></div><div className="step"><span>03</span><h3>Eat happy</h3><p>Track your rider and enjoy food that arrives fresh.</p></div></div></section>
 
