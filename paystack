@@ -1,0 +1,8 @@
+Replace Stripe with Paystack (Nigerian Naira). Remove Stripe code and keys.
+- Server route to initialize a payment: POST https://api.paystack.co/transaction/initialize with the order's total in kobo, the student's email, currency NGN and a unique reference. Save a payments row with status pending. Only one live payment may exist per order.
+- Redirect the student to Paystack's authorization URL. Allow card and bank transfer.
+- Webhook route: read the raw request body, verify the x-paystack-signature header (HMAC SHA512 of the raw body using PAYSTACK_SECRET_KEY), then call GET https://api.paystack.co/transaction/verify/{reference}. Mark the payment successful only if status is success, the amount equals the order total and the currency is NGN. Make it safe to receive the same event twice.
+- The payment-return page must read the status from the database, never trust the redirect.
+- Add a manual bank transfer option that creates the payment with status "awaiting verification", lets the student upload proof, and lets an admin confirm it.
+- Only a paid order can be confirmed by the vendor.
+- The secret key must only be used in server code. Tell me exactly which environment variables to set (PAYSTACK_SECRET_KEY, and the public key if needed) and what webhook URL to enter in the Paystack dashboard.
