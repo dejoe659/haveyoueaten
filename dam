@@ -1,0 +1,1 @@
+Admin can set the platform commission (allowed 5 to 10 percent), delivery fee and per-vendor commission override. Each order stores the commission rate and amount at the time it was placed. Vendors see sales (daily, weekly, monthly), earnings after commission and payout history. Admin sees total revenue, orders, users and charts.
