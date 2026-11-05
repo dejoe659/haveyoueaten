@@ -80,3 +80,19 @@ h1 {
   border-radius: 50%;
   background: var(--lime);
 }
+
+.admin-nav {
+  margin-top: 1.5rem;
+}
+
+.admin-nav a {
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-underline-offset: 0.2em;
+}
+
+.admin-nav a:hover,
+.admin-nav a:focus-visible {
+  color: var(--lime);
+}

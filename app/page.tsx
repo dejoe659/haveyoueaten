@@ -11,6 +11,9 @@ export default function HomePage() {
           <span className="status-dot" aria-hidden="true" />
           Launching at UNN
         </div>
+        <nav className="admin-nav" aria-label="Admin navigation">
+          <a href="/admin">Admin dashboard</a>
+        </nav>
       </section>
     </main>
   );
